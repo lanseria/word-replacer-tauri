@@ -4,7 +4,7 @@
   "version": "2.0.2",
   "type": "module",
   "scripts": {
-    "dev": "concurrently --kill-others \"pnpm vite:dev\" \"pnpm devtools\"",
+    "dev": "concurrently --kill-others \"pnpm vite:dev\"",
     "vite:dev": "cross-env DEBUG=0 vite",
     "devtools": "vue-devtools",
     "test": "vitest",
