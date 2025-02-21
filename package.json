@@ -1,17 +1,17 @@
 {
   "name": "word-replacer-tauri",
-  "private": true,
-  "version": "1.0.0",
   "type": "module",
+  "version": "1.0.0",
+  "private": true,
   "scripts": {
     "dev": "concurrently --kill-others \"pnpm vite:dev\"",
     "vite:dev": "cross-env DEBUG=0 vite",
     "devtools": "vue-devtools",
     "build": "vue-tsc --noEmit && vite build",
     "preview": "vite preview",
+    "check": "node scripts/check.mjs",
     "type-check": "vue-tsc --build --force",
-    "tauri": "tauri",
-    "check": "cargo check --manifest-path src-tauri/Cargo.toml"
+    "tauri": "tauri"
   },
   "dependencies": {
     "@tauri-apps/api": "2.2.0",
@@ -33,7 +33,11 @@
     "cross-env": "7.0.3",
     "eslint": "9.18.0",
     "eslint-plugin-format": "^1.0.1",
+    "https-proxy-agent": "^7.0.6",
     "lodash-es": "4.17.21",
+    "node-fetch": "^3.3.2",
+    "proxy-agent": "^6.5.0",
+    "tar": "^7.4.3",
     "typescript": "5.7.2",
     "unocss": "^66.0.0",
     "unplugin-auto-import": "19.0.0",

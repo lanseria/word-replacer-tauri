@@ -24,3 +24,6 @@ dist-ssr
 *.local
 LOCAL_NOTES.md
 .env
+.wr-cl
+src-tauri/binaries/**
+src-tauri/resources/**

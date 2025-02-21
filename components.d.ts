@@ -8,5 +8,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     GreetComponent: typeof import('./src/components/GreetComponent.vue')['default']
+    WrClConfig: typeof import('./src/components/WrClConfig.vue')['default']
   }
 }
