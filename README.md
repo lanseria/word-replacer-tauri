@@ -57,3 +57,16 @@ A simple word replacer written in Rust using Tauri.
 根据这个参数说明，使用 vue3 以及 unocss 实现一个简单页面
 
 都使用 input 来实现，使用 vue3 的响应式特性，实现双向绑定，做好一定的排版，重复的样式请使用 unocss 的 shortcut 来实现
+
+## 发布
+
+```bash
+git tag -d v1.1.0
+git push origin --delete v1.1.0
+git tag -a v1.1.0 -m "Release version 1.1.0"
+git push origin v1.1.0
+```
+
+## 许可证
+
+MIT
