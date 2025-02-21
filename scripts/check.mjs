@@ -33,8 +33,6 @@ const PLATFORM_MAP = {
 const arg1 = process.argv.slice(2)[0]
 const arg2 = process.argv.slice(2)[1]
 const target = arg1 === '--force' ? arg2 : arg1
-// log_debug('target:', target)
-// Get host triple
 const SIDECAR_HOST = target || execSync('rustc -vV')
   .toString()
   // eslint-disable-next-line regexp/no-empty-lookarounds-assertion
@@ -55,6 +53,7 @@ function getWrClInfo() {
     name: 'wr-cl',
     targetBinaryName: isWin ? 'wr-cl.exe' : 'wr-cl',
     targetBinaryPath: `wr-cl-${SIDECAR_HOST}${isWin ? '.exe' : ''}`,
+    baseBinaryPath: `wr-cl${isWin ? '.exe' : ''}`, // New field for the base binary name
     configTemplate: 'config.json.template',
     configTarget: 'config.json',
     downloadURL,
@@ -71,7 +70,6 @@ async function downloadFile(url, path) {
       || process.env.https_proxy
 
   if (httpProxy) {
-    // 修改这里的代理agent创建方式
     log_debug('Using proxy:', ProxyAgent)
     const proxyAgent = new ProxyAgent()
     options.agent = proxyAgent
@@ -84,13 +82,25 @@ async function downloadFile(url, path) {
     headers: { 'Content-Type': 'application/octet-stream' },
   })
 
-  if (!response.ok) {
+  if (!response.ok)
     throw new Error(`Failed to download ${url}: ${response.statusText}`)
-  }
 
   const buffer = await response.arrayBuffer()
   await fsp.writeFile(path, new Uint8Array(buffer))
   log_success(`download finished: ${url}`)
+}
+
+async function copyFile(src, dest) {
+  try {
+    await fsp.copyFile(src, dest)
+    if (!getWrClInfo().isWin)
+      await fsp.chmod(dest, 0o755) // Set executable permissions on Unix-like systems
+    log_success(`File copied and permissions set: ${dest}`)
+  }
+  catch (err) {
+    log_error(`Error copying file from ${src} to ${dest}:`, err)
+    throw err
+  }
 }
 
 async function resolveWrCl() {
@@ -99,19 +109,22 @@ async function resolveWrCl() {
   const tempTarGz = path.join(tempDir, 'wr-cl.tar.gz')
 
   // Create directories
-  const binariesDir = path.join(cwd, 'src-tauri/binaries')
+  const binariesDir = path.join(cwd, 'src-tauri/sidecar')
   const resourcesDir = path.join(cwd, 'src-tauri/resources')
 
   await fsp.mkdir(binariesDir, { recursive: true })
   await fsp.mkdir(resourcesDir, { recursive: true })
   await fsp.mkdir(tempDir, { recursive: true })
-  // await fsp.mkdir(tempDir, { recursive: true })
 
-  const binaryPath = path.join(binariesDir, info.targetBinaryPath)
+  const archSpecificBinaryPath = path.join(binariesDir, info.targetBinaryPath)
+  const baseBinaryPath = path.join(binariesDir, info.baseBinaryPath)
   const configPath = path.join(resourcesDir, info.configTarget)
 
   // Skip if files exist and not forced
-  if (!FORCE && fs.existsSync(binaryPath) && fs.existsSync(configPath)) {
+  if (!FORCE
+    && fs.existsSync(archSpecificBinaryPath)
+    && fs.existsSync(baseBinaryPath)
+    && fs.existsSync(configPath)) {
     log_info('Files already exist, skipping download')
     return
   }
@@ -121,7 +134,7 @@ async function resolveWrCl() {
     log_debug('downloading...')
     await downloadFile(info.downloadURL, tempTarGz)
     log_debug('tempTarGz: ', tempTarGz)
-    // return
+
     // Extract the archive
     await extract({
       file: tempTarGz,
@@ -130,28 +143,26 @@ async function resolveWrCl() {
 
     // Move files to their destinations
     const extractedBinary = path.join(tempDir, info.targetBinaryName)
+
+    // First, copy the binary to the architecture-specific path
+    await copyFile(extractedBinary, archSpecificBinaryPath)
+
+    // Then, copy the same binary to the base path
+    await copyFile(extractedBinary, baseBinaryPath)
+
+    // Handle config file
     const extractedConfig = path.join(tempDir, info.configTemplate)
-
-    await fsp.rename(extractedBinary, binaryPath)
     await fsp.rename(extractedConfig, configPath)
-
-    // Set executable permissions on Unix-like systems
-    if (!info.isWin) {
-      execSync(`chmod 755 ${binaryPath}`)
-      log_success(`chmod finished: ${binaryPath}`)
-    }
 
     log_success('wr-cl setup completed successfully')
   }
   catch (err) {
     log_error('Error during wr-cl setup:', err.message)
-    // Cleanup on error
-    // await fsp.rm(binaryPath, { force: true })
-    // await fsp.rm(configPath, { force: true })
     throw err
   }
   finally {
     // Cleanup temp directory
+    // Commented out for debugging purposes
     // await fsp.rm(tempDir, { recursive: true, force: true })
   }
 }
