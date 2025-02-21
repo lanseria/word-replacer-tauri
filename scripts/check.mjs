@@ -46,7 +46,7 @@ const REPO_BASE = 'https://github.com/lanseria/wr-cl/releases/download'
 function getWrClInfo() {
   const isWin = platform === 'windows'
   const isMac = platform === 'darwin'
-  const platformSuffix = isWin ? 'windows.exe' : isMac ? 'macos' : 'linux'
+  const platformSuffix = isWin ? 'windows' : isMac ? 'macos' : 'linux'
   const downloadURL = `${REPO_BASE}/${WR_CL_VERSION}/wr-cl-${platformSuffix}.tar.gz`
 
   return {
