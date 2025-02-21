@@ -1,5 +1,7 @@
-import vue from '@vitejs/plugin-vue'
+import { env } from 'node:process'
 import { fileURLToPath, URL } from 'node:url'
+import vue from '@vitejs/plugin-vue'
+import UnoCSS from 'unocss/vite'
 import AutoImport from 'unplugin-auto-import/vite'
 import Components from 'unplugin-vue-components/vite'
 import { defineConfig } from 'vite'
@@ -8,11 +10,11 @@ import topLevelAwait from 'vite-plugin-top-level-await'
 import vueDevTools from 'vite-plugin-vue-devtools'
 import { version as pkgVersion } from './package.json'
 
-const HOST = process.env.TAURI_DEV_HOST
-const PLATFORM = process.env.TAURI_PLATFORM
-process.env.VITE_APP_VERSION = pkgVersion
-if (process.env.NODE_ENV === 'production') {
-  process.env.VITE_APP_BUILD_EPOCH = new Date().getTime().toString()
+const HOST = env.TAURI_DEV_HOST
+// const PLATFORM = env.TAURI_PLATFORM
+env.VITE_APP_VERSION = pkgVersion
+if (env.NODE_ENV === 'production') {
+  env.VITE_APP_BUILD_EPOCH = new Date().getTime().toString()
 }
 
 // https://vitejs.dev/config/
@@ -26,10 +28,6 @@ export default defineConfig({
       imports: [
         'vue',
         'vue-router',
-        'pinia',
-        {
-          '@/store': ['useStore'],
-        },
       ],
       dts: 'auto-imports.d.ts',
       vueTemplate: true,
@@ -37,6 +35,7 @@ export default defineConfig({
     Components({
       dts: 'components.d.ts',
     }),
+    UnoCSS(),
   ],
   resolve: {
     alias: {
@@ -68,15 +67,8 @@ export default defineConfig({
     outDir: './dist',
     // See https://v2.tauri.app/reference/webview-versions/ for details
     target: 'es2021',
-    minify: !process.env.TAURI_DEBUG ? 'esbuild' : false,
+    minify: !env.TAURI_DEBUG ? 'esbuild' : false,
     emptyOutDir: true,
     chunkSizeWarningLimit: 1024,
   },
-  optimizeDeps: {
-    include: [
-      'vite-plugin-node-polyfills/shims/buffer', 
-      'vite-plugin-node-polyfills/shims/global', 
-      'vite-plugin-node-polyfills/shims/process', 
-    ]
-  }
 })
