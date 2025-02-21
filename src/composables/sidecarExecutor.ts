@@ -5,6 +5,7 @@ import { Command } from '@tauri-apps/plugin-shell'
 export interface ExecutionResult {
   success: boolean
   message: string
+  info: string
   details?: {
     filesProcessed?: number
     replacementsMade?: number
@@ -41,13 +42,17 @@ export async function executeSidecar(
     return {
       success: true,
       message: 'Word replacement completed successfully',
-      details: result,
+      info: result,
+      details: {
+        filesProcessed: 1,
+      },
     }
   }
   catch (error) {
     console.error('Sidecar execution failed:', error)
     return {
       success: false,
+      info: '',
       message: error instanceof Error ? error.message : 'Unknown error occurred',
     }
   }

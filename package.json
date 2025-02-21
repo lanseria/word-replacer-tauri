@@ -8,9 +8,7 @@
     "vite:dev": "cross-env DEBUG=0 vite",
     "devtools": "vue-devtools",
     "build": "vue-tsc --noEmit && vite build",
-    "preview": "vite preview",
     "check": "node scripts/check.mjs",
-    "type-check": "vue-tsc --build --force",
     "tauri": "tauri"
   },
   "dependencies": {
