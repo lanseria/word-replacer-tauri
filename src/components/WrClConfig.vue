@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { open } from '@tauri-apps/plugin-dialog'
 import { executeSidecar } from '~/composables/sidecarExecutor'
 
 const config = reactive<WrClConfig>({
@@ -82,6 +83,24 @@ async function executeReplacement() {
   finally {
     isProcessing.value = false
   }
+}
+
+async function selectInputPath() {
+// Open a dialog
+  const file = await open({
+    multiple: false,
+    directory: true,
+  })
+  config.file_settings.input_path = file?.toString() || ''
+}
+
+async function selectOutputPath() {
+// Open a dialog
+  const file = await open({
+    multiple: false,
+    directory: true,
+  })
+  config.file_settings.output_path = file?.toString() || ''
 }
 </script>
 
@@ -177,11 +196,17 @@ async function executeReplacement() {
               class="input-mini"
               placeholder="Input path"
             >
+            <button class="text-sm" @click="selectInputPath">
+              选择input
+            </button>
             <input
               v-model="config.file_settings.output_path"
               class="input-mini"
               placeholder="Output path"
             >
+            <button class="text-sm" @click="selectOutputPath">
+              选择output
+            </button>
           </div>
         </section>
 
