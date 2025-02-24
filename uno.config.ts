@@ -7,7 +7,7 @@ export default defineConfig({
     'form-label': 'block text-gray-700 text-sm font-bold mb-2',
     'form-section': 'bg-gray-50 p-6 rounded-lg mb-6',
     'checkbox-wrapper': 'flex items-center gap-2',
-    'card': 'bg-gray-50 p-3 rounded-lg shadow-sm',
+    'card': 'bg-gray-50 p-2 rounded-lg shadow-sm',
     'card-title': 'text-sm font-semibold text-gray-700 mb-2',
     'input-mini': 'px-2 py-1.5 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500',
     'select-mini': 'px-2 py-1.5 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500',
@@ -15,7 +15,7 @@ export default defineConfig({
     'btn-primary-sm': 'px-3 py-1 bg-blue-500 text-white text-xs font-medium rounded hover:bg-blue-600',
     'rule-card': 'bg-white p-2 rounded border',
     'option': 'flex items-center gap-1 text-xs text-gray-600',
-    'console-output': 'bg-gray-800 text-white text-sm p-2 rounded h-[200px] overflow-y-auto font-mono',
+    'console-output': 'bg-gray-800 text-white text-sm p-2 rounded h-[100px] overflow-y-auto font-mono',
     'config-preview': 'bg-gray-800 text-white text-xs p-2 rounded  overflow-x-auto max-h-[150px] overflow-y-auto',
 
   },

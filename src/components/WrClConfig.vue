@@ -16,9 +16,9 @@ const config = reactive<WrClConfig>({
     }],
   },
   file_settings: {
-    input_path: '/Users/zhangchao/Documents/Code/Supeset/wr-cl/input',
+    input_path: '',
     file_types: ['.docx'],
-    output_path: '/Users/zhangchao/Documents/Code/Supeset/wr-cl/output',
+    output_path: '',
   },
   advanced: {
     max_workers: 4,
@@ -106,9 +106,9 @@ async function selectOutputPath() {
 
 <template>
   <div class="mx-auto p-4">
-    <div class="grid grid-cols-5 gap-4">
+    <div class="grid grid-cols-2 gap-4">
       <!-- Left Column (3/5) - Configuration -->
-      <div class="col-span-3 space-y-3">
+      <div class="col-span-1 space-y-3">
         <!-- Replacements -->
         <section class="card">
           <div class="flex items-center justify-between mb-2">
@@ -188,6 +188,7 @@ async function selectOutputPath() {
                 v-model="fileTypes"
                 class="input-mini"
                 placeholder="File types (e.g., .docx,.txt)"
+                disabled
                 @input="updateFileTypes"
               >
             </div>
@@ -195,6 +196,7 @@ async function selectOutputPath() {
               v-model="config.file_settings.input_path"
               class="input-mini"
               placeholder="Input path"
+              disabled
             >
             <button class="text-sm" @click="selectInputPath">
               选择input
@@ -203,6 +205,7 @@ async function selectOutputPath() {
               v-model="config.file_settings.output_path"
               class="input-mini"
               placeholder="Output path"
+              disabled
             >
             <button class="text-sm" @click="selectOutputPath">
               选择output
@@ -216,7 +219,7 @@ async function selectOutputPath() {
             Advanced
           </h2>
           <div class="grid grid-cols-2 gap-2">
-            <div>
+            <div class="space-y-2">
               <input
                 v-model.number="config.advanced.max_workers"
                 type="number"
@@ -224,8 +227,6 @@ async function selectOutputPath() {
                 min="1"
                 placeholder="Max workers"
               >
-            </div>
-            <div>
               <input
                 v-model.number="config.advanced.timeout"
                 type="number"
@@ -239,7 +240,7 @@ async function selectOutputPath() {
       </div>
 
       <!-- Right Column (2/5) - Execution and Output -->
-      <div class="col-span-2 space-y-3">
+      <div class="col-span-1 space-y-3">
         <!-- Execute Button -->
         <section class="card">
           <div class="flex justify-between items-center">
