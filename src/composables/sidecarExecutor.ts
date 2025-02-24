@@ -5,16 +5,15 @@ import { Command } from '@tauri-apps/plugin-shell'
 export interface ExecutionResult {
   success: boolean
   message: string
-  info: string
-  details?: {
-    filesProcessed?: number
-    replacementsMade?: number
-    errors?: string[]
-  }
+}
+
+export interface LogCallback {
+  (log: string): void
 }
 
 export async function executeSidecar(
   config: WrClConfig,
+  onLog?: LogCallback,
 ): Promise<ExecutionResult> {
   try {
     // 创建临时配置文件
@@ -28,7 +27,19 @@ export async function executeSidecar(
       '--config',
       configPath,
     ])
-    // const command = Command.sidecar('sidecar/wr-cl', ['--help'])
+    // 设置输出流监听器
+    command.stdout.on('data', (line) => {
+      if (onLog)
+        onLog(line)
+      // eslint-disable-next-line no-console
+      console.log('[Sidecar stdout]:', line)
+    })
+
+    command.stderr.on('data', (line) => {
+      if (onLog)
+        onLog(line)
+      console.error('[Sidecar stderr]:', line)
+    })
 
     // 执行命令并等待结果
     const output = await command.execute()
@@ -36,23 +47,15 @@ export async function executeSidecar(
     if (output.code !== 0) {
       throw new Error(output.stderr)
     }
-
-    // 解析输出结果
-    const result = output.stdout
     return {
       success: true,
       message: 'Word replacement completed successfully',
-      info: result,
-      details: {
-        filesProcessed: 1,
-      },
     }
   }
   catch (error) {
     console.error('Sidecar execution failed:', error)
     return {
       success: false,
-      info: '',
       message: error instanceof Error ? error.message : 'Unknown error occurred',
     }
   }

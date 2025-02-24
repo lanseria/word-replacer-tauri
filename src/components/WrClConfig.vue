@@ -65,13 +65,15 @@ async function executeReplacement() {
   log('Starting word replacement...')
 
   try {
-    const result = await executeSidecar(config)
+    // 创建一个日志处理函数
+    const handleLog = (data: string) => {
+      // 这里可以根据需要处理日志
+      // 比如更新UI、存储到状态管理中等
+      log(data)
+    }
+    const result = await executeSidecar(config, handleLog)
     if (result.success) {
       log('✅ Process completed successfully')
-      if (result.details) {
-        log(`📁 Files processed: ${result.details}`)
-        log(`🔄 Replacements made: ${result.details}`)
-      }
     }
     else {
       throw new Error(result.message)
