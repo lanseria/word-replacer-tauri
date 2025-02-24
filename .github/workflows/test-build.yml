@@ -50,5 +50,5 @@ jobs:
 
       - name: Build Tauri
         run: |
-          pnpm check
+          pnpm check --force
           pnpm tauri build
