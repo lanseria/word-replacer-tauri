@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "@antfu/eslint-config": "^4.3.0",
-    "@iconify/json": "^2.2.309",
+    "@iconify/json": "^2.2.310",
     "@iconify/types": "^2.0.0",
     "@tauri-apps/cli": "^2.2.7",
     "@types/node": "^22.13.5",
@@ -33,7 +33,6 @@
     "cross-env": "^7.0.3",
     "eslint": "^9.21.0",
     "eslint-plugin-format": "^1.0.1",
-    "https-proxy-agent": "^7.0.6",
     "node-fetch": "^3.3.2",
     "proxy-agent": "^6.5.0",
     "tar": "^7.4.3",
