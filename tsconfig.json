@@ -23,5 +23,5 @@
     "forceConsistentCasingInFileNames": true,
     "skipLibCheck": true
   },
-  "exclude": ["dist", "node_modules", "eslint.config.mjs", "scripts/*.mjs"]
+  "exclude": ["dist", "node_modules", "eslint.config.mjs", "scripts/*.mjs", "src-tauri"]
 }

@@ -40,7 +40,7 @@ jobs:
       - name: Pnpm install and check
         run: |
           pnpm i
-          pnpm check
+          pnpm check --force
 
       - name: Use Node.js
         uses: actions/setup-node@v4

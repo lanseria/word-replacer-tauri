@@ -6,8 +6,8 @@ const config = reactive<WrClConfig>({
   replacements: {
     pattern_type: 'plain',
     rules: [{
-      old_text: '小沙街道',
-      new_text: '新城街道',
+      old_text: '',
+      new_text: '',
       options: {
         case_sensitive: false,
         whole_word: false,
@@ -59,6 +59,24 @@ function log(message: string, type: 'info' | 'error' = 'info') {
   })
 }
 
+async function selectInputPath() {
+// Open a dialog
+  const file = await open({
+    multiple: false,
+    directory: true,
+  })
+  config.file_settings.input_path = file?.toString() || ''
+}
+
+async function selectOutputPath() {
+// Open a dialog
+  const file = await open({
+    multiple: false,
+    directory: true,
+  })
+  config.file_settings.output_path = file?.toString() || ''
+}
+
 async function executeReplacement() {
   isProcessing.value = true
   consoleOutput.value = []
@@ -85,24 +103,6 @@ async function executeReplacement() {
   finally {
     isProcessing.value = false
   }
-}
-
-async function selectInputPath() {
-// Open a dialog
-  const file = await open({
-    multiple: false,
-    directory: true,
-  })
-  config.file_settings.input_path = file?.toString() || ''
-}
-
-async function selectOutputPath() {
-// Open a dialog
-  const file = await open({
-    multiple: false,
-    directory: true,
-  })
-  config.file_settings.output_path = file?.toString() || ''
 }
 </script>
 
@@ -133,7 +133,7 @@ async function selectOutputPath() {
               <h3 class="text-sm font-medium">
                 Rules
               </h3>
-              <button class="btn-primary-sm" @click="addRule">
+              <button class="btn-primary" @click="addRule">
                 Add Rule
               </button>
             </div>
@@ -150,16 +150,20 @@ async function selectOutputPath() {
                 </button>
               </div>
               <div class="space-y-2">
-                <input
-                  v-model="rule.old_text"
-                  class="input-mini"
-                  placeholder="Old text"
-                >
-                <input
-                  v-model="rule.new_text"
-                  class="input-mini"
-                  placeholder="New text"
-                >
+                <div>
+                  <input
+                    v-model="rule.old_text"
+                    class="input-mini"
+                    placeholder="Old text"
+                  >
+                </div>
+                <div>
+                  <input
+                    v-model="rule.new_text"
+                    class="input-mini"
+                    placeholder="New text"
+                  >
+                </div>
                 <div class="flex gap-3 text-sm">
                   <label class="option">
                     <input v-model="rule.options.case_sensitive" type="checkbox">
@@ -200,8 +204,8 @@ async function selectOutputPath() {
               placeholder="Input path"
               disabled
             >
-            <button class="text-sm" @click="selectInputPath">
-              选择input
+            <button class="btn-primary" @click="selectInputPath">
+              select input
             </button>
             <input
               v-model="config.file_settings.output_path"
@@ -209,8 +213,8 @@ async function selectOutputPath() {
               placeholder="Output path"
               disabled
             >
-            <button class="text-sm" @click="selectOutputPath">
-              选择output
+            <button class="btn-primary" @click="selectOutputPath">
+              select output
             </button>
           </div>
         </section>
@@ -228,6 +232,7 @@ async function selectOutputPath() {
                 class="input-mini"
                 min="1"
                 placeholder="Max workers"
+                disabled
               >
               <input
                 v-model.number="config.advanced.timeout"
@@ -235,6 +240,7 @@ async function selectOutputPath() {
                 class="input-mini"
                 min="1"
                 placeholder="Timeout (s)"
+                disabled
               >
             </div>
           </div>
@@ -264,7 +270,7 @@ async function selectOutputPath() {
           <h2 class="card-title">
             Console Output
           </h2>
-          <div class="console-output">
+          <div class="console-output h-200px">
             <div
               v-for="(log, index) in consoleOutput"
               :key="index"

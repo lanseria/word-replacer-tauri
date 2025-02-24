@@ -40,7 +40,7 @@ const SIDECAR_HOST = target || execSync('rustc -vV')
 
 const platform = target ? PLATFORM_MAP[target] : process.platform === 'win32' ? 'windows' : process.platform
 log_debug('platform:', platform)
-const WR_CL_VERSION = 'v1.1.0'
+const WR_CL_VERSION = 'v1.2.0'
 const REPO_BASE = 'https://github.com/lanseria/wr-cl/releases/download'
 
 function getWrClInfo() {

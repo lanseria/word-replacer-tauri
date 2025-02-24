@@ -20,8 +20,6 @@ export async function executeSidecar(
     const tempDirPath = await tempDir()
     const configPath = await join(tempDirPath, 'word-replacement-config.json')
     await writeTextFile(configPath, JSON.stringify(config, null, 2))
-    // eslint-disable-next-line no-console
-    console.debug('configPath', configPath)
     // 执行 sidecar
     const command = Command.sidecar('sidecar/wr-cl', [
       '--config',
@@ -40,13 +38,19 @@ export async function executeSidecar(
         onLog(line)
       console.error('[Sidecar stderr]:', line)
     })
+    // 创建一个 Promise, 等待 close 事件触发后再往下执行
+    const closePromise = new Promise<void>((resolve) => {
+      command.on('close', (data) => {
+        // eslint-disable-next-line no-console
+        console.log(`Command finished with code ${data.code} and signal ${data.signal}`)
+        resolve()
+      })
+    })
+    await command.spawn()
 
-    // 执行命令并等待结果
-    const output = await command.execute()
+    // 等待进程关闭
+    await closePromise
 
-    if (output.code !== 0) {
-      throw new Error(output.stderr)
-    }
     return {
       success: true,
       message: 'Word replacement completed successfully',

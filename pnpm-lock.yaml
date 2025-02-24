@@ -20,6 +20,9 @@ importers:
       '@tauri-apps/plugin-shell':
         specifier: ^2.2.0
         version: 2.2.0
+      '@unocss/reset':
+        specifier: ^66.0.0
+        version: 66.0.0
       '@vue/devtools':
         specifier: ^7.7.2
         version: 7.7.2(vite@6.1.1(@types/node@22.13.5)(jiti@2.4.2)(yaml@2.7.0))(vue@3.5.13(typescript@5.7.3))

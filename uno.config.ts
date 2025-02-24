@@ -11,11 +11,10 @@ export default defineConfig({
     'card-title': 'text-sm font-semibold text-gray-700 mb-2',
     'input-mini': 'px-2 py-1.5 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500',
     'select-mini': 'px-2 py-1.5 text-sm border rounded focus:outline-none focus:ring-1 focus:ring-blue-500',
-    'btn-primary': 'px-4 py-1.5 bg-blue-500 text-white text-sm font-medium rounded hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed',
-    'btn-primary-sm': 'px-3 py-1 bg-blue-500 text-white text-xs font-medium rounded hover:bg-blue-600',
+    'btn-primary': 'px-4 py-1 rounded inline-block bg-blue-600 text-white cursor-pointer hover:bg-blue-700 disabled:cursor-default disabled:bg-gray-600 disabled:opacity-50',
     'rule-card': 'bg-white p-2 rounded border',
     'option': 'flex items-center gap-1 text-xs text-gray-600',
-    'console-output': 'bg-gray-800 text-white text-sm p-2 rounded h-[100px] overflow-y-auto font-mono',
+    'console-output': 'bg-gray-800 text-white text-sm p-2 rounded overflow-y-auto font-mono',
     'config-preview': 'bg-gray-800 text-white text-xs p-2 rounded  overflow-x-auto max-h-[150px] overflow-y-auto',
 
   },

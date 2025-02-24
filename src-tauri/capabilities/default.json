@@ -20,7 +20,7 @@
       ]
     },
     {
-      "identifier": "shell:allow-execute",
+      "identifier": "shell:allow-spawn",
       "allow": [
         {
           "name": "sidecar/wr-cl",
@@ -30,7 +30,6 @@
       ]
     },
     "fs:default",
-    "dialog:default",
     "dialog:default"
   ]
 }
