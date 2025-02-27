@@ -4,6 +4,7 @@ VERSION_FILE=".version"
 PACKAGE_JSON="package.json"
 TAURI_CONF="src-tauri/tauri.conf.json"
 CARGO_TOML="src-tauri/Cargo.toml"
+CARGO_LOCK="src-tauri/Cargo.lock"
 
 # 检查参数是否合法
 if [[ $# -ne 1 ]]; then
@@ -73,11 +74,20 @@ else
   echo "警告：$CARGO_TOML 不存在，跳过"
 fi
 
+# 更新 Cargo.lock
+if [[ -f $CARGO_LOCK ]]; then
+  sed -i.bak "s/^version = \".*\"$/version = \"$new_version\"/" "$CARGO_LOCK" && rm -f "$CARGO_LOCK.bak"
+  echo "更新 $CARGO_LOCK 版本号为 $new_version"
+else
+  echo "警告：$CARGO_LOCK 不存在，跳过"
+fi
+
 # 收集要提交的文件
 files_to_add=("$VERSION_FILE")
 [[ -f $PACKAGE_JSON ]] && files_to_add+=("$PACKAGE_JSON")
 [[ -f $TAURI_CONF ]] && files_to_add+=("$TAURI_CONF")
 [[ -f $CARGO_TOML ]] && files_to_add+=("$CARGO_TOML")
+[[ -f $CARGO_LOCK ]] && files_to_add+=("$CARGO_LOCK")
 
 # 提交变更
 git add "${files_to_add[@]}"
