@@ -15,7 +15,6 @@ interface WrClConfig {
   }
   file_settings: {
     input_path: string
-    file_types: string[]
     output_path: string
   }
   advanced: {

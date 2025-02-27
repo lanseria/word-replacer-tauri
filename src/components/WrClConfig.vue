@@ -17,7 +17,6 @@ const config = reactive<WrClConfig>({
   },
   file_settings: {
     input_path: '',
-    file_types: ['.docx'],
     output_path: '',
   },
   advanced: {
@@ -26,13 +25,8 @@ const config = reactive<WrClConfig>({
   },
 })
 
-const fileTypes = ref('.docx')
 const isProcessing = ref(false)
 const consoleOutput = ref<Array<{ type: 'info' | 'error', message: string }>>([])
-
-function updateFileTypes() {
-  config.file_settings.file_types = fileTypes.value.split(',').map(t => t.trim())
-}
 
 function addRule() {
   config.replacements.rules.push({
@@ -186,18 +180,9 @@ async function executeReplacement() {
         <!-- File Settings -->
         <section class="card">
           <h2 class="card-title">
-            File Settings
+            File Settings (.docx)
           </h2>
           <div class="grid grid-cols-2 gap-2">
-            <div class="col-span-2">
-              <input
-                v-model="fileTypes"
-                class="input-mini"
-                placeholder="File types (e.g., .docx,.txt)"
-                disabled
-                @input="updateFileTypes"
-              >
-            </div>
             <input
               v-model="config.file_settings.input_path"
               class="input-mini"
@@ -272,11 +257,11 @@ async function executeReplacement() {
           </h2>
           <div class="console-output h-200px">
             <div
-              v-for="(log, index) in consoleOutput"
+              v-for="(logStr, index) in consoleOutput"
               :key="index"
-              :class="{ 'text-red-400': log.type === 'error' }"
+              :class="{ 'text-red-400': logStr.type === 'error' }"
             >
-              {{ log.message }}
+              {{ logStr.message }}
             </div>
           </div>
         </section>
