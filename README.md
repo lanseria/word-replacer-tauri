@@ -7,6 +7,8 @@ A simple word replacer written in Rust using Tauri.
 这个项目是一个简单 Word `docx` 文字替换器，使用`Rust`编写，并使用`Tauri`作为前端框架。
 借用了 [wr-cl](https://github.com/lanseria/wr-cl) 可执行文件，以实现跨平台(windows/macos-arm/linux)
 
+![](./docs/demo.jpg)
+
 ## 开发
 
 根据不同的平台，下载 `wr-cl` 压缩包
